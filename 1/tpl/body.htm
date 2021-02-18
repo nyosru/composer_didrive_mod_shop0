@@ -1,0 +1,214 @@
+{% spaceless %}
+
+    {% if get.option is defined and get.option == 'cart' %}
+
+        {% set items_in_cart = shop__get_items_from_cart(db)  %}
+        {#pa(items_in_cart,2) {{ pa(items_in_cart,2) }}#}
+
+        {% include constant('dir_mods_mod_vers_tpl')~'body.cart.htm' %}
+
+    {% else %}
+
+        {# config #}
+
+        {% set items = shop__get_items(db, get.option, '', ( get.search ?? '' ) )  %}
+        {#pa(items,2) {{ pa(items,2) }}#}
+
+        {% set on1page = 23 %}
+        {% set page_now = ( get.ext1 ?? get.page ?? 1 ) %}
+        {% set kolvo_page = ( items|length / on1page )|round(0, 'ceil')  %}
+
+        {# сколько показывать ссылок слева справа от текущей страницы #}
+        {% set show_page_in_list = 3 %}
+
+        {% set page_now0 = page_now - 1 %}
+        {% set show_on = ( page_now0 * on1page ) + 1  %}
+        {% set show_off = ( show_on + on1page ) - 1  %}
+
+        <section class="shop-list-v2-page">
+            <div class="container-fluid">
+
+                <div class="heading-sub">
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="widget-product-list">
+                    <div class="row">
+
+
+                        <div class="col-md-12 col-xs-12">
+
+                            {# верхняя строчка списка итемов #}
+                            {% if 1 == 1 %}
+                                <div xclass="filter-block bd">
+
+                                    <div class="row" style="padding-bottom: 3vh;">
+
+                                        <div class="col-xs-12 col-md-10" style="padding-left:5%;" >
+
+                                            {#{{ get.option }}#}
+                                            {% set nav_cat = shop__get_nav_cats(db, get.option) %}
+                                            {#{{ pa(nav_cat) }}#}
+
+                                            {% if nav_cat != false %}
+                                                <ul class="other-link-sub xpull-right">
+                                                    <li><a href="/show/">Авто-АС</a></li>
+                                                        {% for k in 5..1 if nav_cat['cat'~k] is not empty and nav_cat['cat'~k] != '00000126' %}
+                                                            {#{{ nav_cat['cat'~k] }}#}
+                                                        <li><a href="/show/{{ nav_cat['cat'~k] }}/">{{ nav_cat['cat'~k~'_head'] }}</a></li>
+                                                        {% endfor %}
+
+                                                    {#<li><a class="active" href="#shop">Shop</a></li>#}
+
+                                                </ul>
+                                            {% endif %}
+
+                                        </div>                                        
+                                        {% if get.search is defined or get.option is defined %}
+                                            <div class="col-md-2 hidden-xs">
+                                                <div class="box box-view pull-right" style="padding-right:5%; font: 14px/36px 'Open Sans', sans-serif;">
+                                                    <span>Товары {{ show_on }}–{% if items|length < show_off %}{{ items|length }}{% else %}{{ show_off }}{% endif %} из {{ items|length }}</span>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>                        
+
+
+                        {% set nav_cat_down = shop__get_nav_cats_down(db, get.option) %}
+                        {#{{ pa(nav_cat_down,2) }}#}
+
+                        {% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %}
+                            <div class="col-md-3 col-xs-12">
+                                <div class="menu2_block" >
+
+                                    {#{% set get1 = get %}#}
+                                    {#{% set get1 = get1|merge( { 'option' : k , 'up_cat' : ( get.up_cat ?? get.option ) } ) %}#}
+
+                                    {% for k,v in nav_cat_down.in %}
+                                        {#<a href="index.php?{{ f__http_build_query(get1) }}" class="item_menu2" >{{ v }}</a>#}
+                                        <a href="/show/{{ k }}/" class="item_menu2" >{{ v }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+
+                        <div class="{% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %}col-md-9 col-xs-12{% else %} col-md-12 col-xs-12{% endif %}">
+
+
+                            {# список итемов #}
+                            <div class="product-list grid_full grid_sidebar grid-uniform container-fluid">
+
+                                {#{% include constant('dir_mods_mod_vers_tpl')~'body.cats_in.htm' %}#}
+                                {% set nn = 0 %}
+                                {% set nn0 = 0 %}
+                                {% for k, item in items %}
+
+                                    {% if show_on == 1 or ( nn >= show_on and nn <= show_off ) %}
+                                        {% if nn0 <= on1page %}
+
+                                            {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+                                            {#{{ pa(item) }}#}
+
+                                        {% endif %}
+                                        {% set nn0 = nn0+1 %}
+                                    {% endif %}
+
+                                    {% set nn = nn + 1 %}
+
+                                {% endfor %}
+
+                            </div>
+
+                            {% if items|length > on1page and ( get.search is defined or ( get.option is defined and get.option != 'index' ) ) %}
+
+                                <center>
+                                    <div class="product-pagination">
+                                        <ul class="pagination">
+
+                                            {% if page_now > 1 %}
+
+                                                <li><a href="/show/{{ get.option }}/{{ page_now - 1 }}/"><i class="ion-chevron-left"></i></a></li>
+                                                    {% endif %}
+
+                                            {% set skip_page_in_start = false %}
+                                            {% set skip_page_in_end = false %}
+
+                                            {% for i in range(1,kolvo_page,1) %}
+
+                                                {% if i == page_now or i == kolvo_page or i == 1 %}
+
+                                                    <li {% if page_now == i %} class="active" {% endif %} >
+                                                        {% if get.search is defined %}
+                                                            {% set get1 = get %}
+                                                            {% set get1 = get1|merge({ 'page': i }) %}
+                                                            <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
+                                                        {% else %}
+                                                            <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                        {% endif %}
+                                                    </li>
+
+                                                {% elseif i < page_now %}
+
+                                                    {% if i > ( page_now - show_page_in_list ) %}
+                                                        <li >
+                                                            {% if get.search is defined %}
+                                                                {% set get1 = get %}
+                                                                {% set get1 = get1|merge({ 'page': i }) %}
+                                                                <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
+                                                            {% else %}
+                                                                <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                            {% endif %}
+                                                        </li>
+                                                    {% elseif skip_page_in_start == false %}
+                                                        {% set skip_page_in_start = true %}
+                                                        <li >
+                                                            <a href="#" onclick="return false;" >..</a>
+                                                        </li>
+                                                    {% endif %}
+
+                                                {% elseif i > page_now %}
+                                                    {% if i < ( page_now + show_page_in_list ) %}
+                                                        <li >
+                                                            {% if get.search is defined %}
+                                                                {% set get1 = get %}
+                                                                {% set get1 = get1|merge({ 'page': i }) %}
+                                                                <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
+                                                            {% else %}
+                                                                <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                            {% endif %}
+                                                        </li>
+                                                    {% elseif skip_page_in_end == false %}
+                                                        {% set skip_page_in_end = true %}
+                                                        <li >
+                                                            <a href="#" onclick="return false;" >..</a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                            {% endfor %}
+
+                                            {% if page_now < kolvo_page %}
+                                                <li>
+                                                    <a href="/show/{{ get.option }}/{{ page_now + 1 }}/"><i class="ion-chevron-right"></i></a>
+                                                </li>
+                                            {% endif %}
+
+                                        </ul>
+                                    </div>
+                                </center>
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>    
+
+    {% endif %}
+
+{% endspaceless %}

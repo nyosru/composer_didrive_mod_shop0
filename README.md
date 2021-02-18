@@ -1,2 +1,2 @@
-# composer_didrive_mod_shop0
-shop0
+# composer_didrive_mod_shop_bu
+модуль бу витрины

@@ -6,9 +6,14 @@ if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items']) && !
 
     $msg = 'Новый заказ'
             . PHP_EOL
-            . $_REQUEST['io']
+            . htmlspecialchars($_REQUEST['io'])
             . PHP_EOL
-            . $_REQUEST['phone'];
+            . htmlspecialchars($_REQUEST['phone'])
+            . PHP_EOL
+            . 'Ваш город '.htmlspecialchars($_REQUEST['city'])
+            . PHP_EOL
+            . ( !empty( $_REQUEST['dost'] ) ? PHP_EOL . 'адрес для доставки: '.htmlspecialchars($_REQUEST['dost']) : '' )
+            ;
 
     $summa = 0;
 
@@ -35,7 +40,10 @@ if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items']) && !
     // die();
     
     $_SESSION['cart'] = [];
-    \f\redirect('/', 'index.php', ['level' => 'show', 'option' => 'cart', 'warn_order' => 'Заказ принят, спасибо']);
+    \f\redirect('/', 'index.php', ['level' => 'show', 
+        // 'option' => 'cart', 
+        'warn_order' => 'Заказ принят, позвоним в ближайшее время уточнить детали заказа, указали телефон: '. htmlspecialchars($_REQUEST['phone']) 
+        ]);
 }
 
 $vv['tpl_body'] = ( file_exists(dir_site_module_nowlev_tpl . 'body.htm') ? dir_site_module_nowlev_tpl . 'body.htm' : dir_mods_mod_vers_tpl . 'body.htm' );

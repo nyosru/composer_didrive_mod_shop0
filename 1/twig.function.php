@@ -37,14 +37,79 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats', function ( $db, $cat_i
 });
 $twig->addFunction($function);
 
+$function = new Twig_SimpleFunction('search_items', function ( $db, $search = '' ) {
+
+    if( empty($search) )
+        return false;
+    
+    $sql = 'SELECT i.id, 
+            i.head, 
+            i.a_catnumber '
+        . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i '
+        . ' WHERE ( i.head LIKE :s OR i.a_catnumber LIKE :s ) AND i.status = \'show\' '
+        . ' LIMIT 100 ; ';
+
+    $ff = $db->prepare($sql);
+    $ff->execute([':s' => '%' . $search . '%']);
+    return $ff->fetchAll();
+});
+$twig->addFunction($function);
+
+
+$function = new Twig_SimpleFunction('search_items1', function ( $db, $id ) {
+    
+    $sql = 'SELECT * '
+        . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i '
+        . ' WHERE i.id = :i AND i.status = \'show\' '
+        . ' LIMIT 1 ; ';
+
+    $ff = $db->prepare($sql);
+    $ff->execute([':i' => $id ]);
+    return $ff->fetch();
+    
+});
+$twig->addFunction($function);
+
+
+
+
+
+/**
+ * получаем список аналогов товара если есть
+ */
+$function = new Twig_SimpleFunction('shop__get_analogi_items', function ( $db, $analog ) {
+
+    $sql = 'SELECT '
+            . ' i.* , a.art_analog articul2'
+            . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items_analogi) . '` a '
+            . ' LEFT JOIN `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i ON a.art_analog = i.a_catnumber '
+            . ' WHERE a.art_origin = :articul AND a.status = \'show\' ; ';
+
+    $ff = $db->prepare($sql);
+    $ff->execute([':articul' => $analog]);
+    return $ff->fetchAll();
+});
+$twig->addFunction($function);
+
+
+
+
+
+
 $function = new Twig_SimpleFunction('shop__get_carts', function ( ) {
 
     // $_SESSION[] = 123;
     //\f\pa($_SESSION);
-    
+
     return [];
 });
 $twig->addFunction($function);
+
+
+
+
+
+
 
 $function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ( $db, $cat_id ) {
 
@@ -247,12 +312,21 @@ $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = nu
     if (empty($_REQUEST['search']) && !isset($_REQUEST['option']) || ( isset($_REQUEST['option']) && $_REQUEST['option'] == 'index' ))
         \Nyos\mod\items::$sql_limit = 40;
 
-     //\Nyos\mod\items::$show_sql = true;
+    //\Nyos\mod\items::$show_sql = true;
     $items = \Nyos\mod\items::get($db, '021.items');
+
+    // если поиск и нашли всего 1 товар
+    if ( !empty($items) && sizeof($items) == 1 && !empty($search) ) {
+        
+        // \f\pa( $items );
+        
+        \f\redirect( '/'.$_REQUEST['level'].'/i/'.$items[0]['id'].'/'. \f\translit( substr($items[0]['head'],0,20) , 'uri2' ).'/' , '' );
+        die();
+    }
     
     // ищем по каталожному номеру
-    if (empty($items)) {
-    // if ( !empty($search) ) {
+    elseif (empty($items)) {
+        // if ( !empty($search) ) {
         //\Nyos\mod\items::$search['catnumber_search'] = strtolower(\f\translit($search, 'uri3'));
         // \Nyos\mod\items::$show_sql = true;
         // \Nyos\mod\items::$liked_and['catnumber_search'] = strtolower(\f\translit($search, 'uri3'));

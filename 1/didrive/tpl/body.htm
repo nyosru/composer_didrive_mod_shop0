@@ -1,27 +1,186 @@
 
-<div class="container-fluid">
-    <div class="grid">
+{% set now_type = get.now_type ?? 'index' %}
 
-        {# list #}
-        
-        {# если редактирование, то показываем форму редактирования #}
-        
-        <p>данных для показа нет</p>
-        
+<span style="position: fixed; top: 30px; left: 120px; z-index: 99999;" >
+    <a href="?level={{ get.level }}&now_type=norm" class="btn btn-xs {% if now_type == 'norm' %}btn-success{% else %}btn-light{% endif %}" >норм вид</a>
+    <a href="?level={{ get.level }}&now_type=index" class="btn btn-xs {% if now_type == 'index' %}btn-success{% else %}btn-light{% endif %}" >новый вид</a>
+</span>
+
+{% if now_type == 'index' %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+
+                Поиск товара ( введите артикул или часть названия )
+
+                <form action="" method="get" >
+                    <input type="text" class="form-control" name="search" value="{{ get.search|e }}"/>
+                    <input type="hidden" name="now_type" value="{{ now_type|e }}" />
+                    <input type="hidden" name="level" value="{{ get.level|e }}" />
+                    <input type="submit" value="Найти товары" />
+                </form>
+
+
+                {% set ar = search_items(db,get.search) %}
+                {#{{ pa(ar,2) }}#}
+                {% if ar|length == 100 %}
+                    <div class="alert alert-warning" >показаны первые 100 найденных позиций, уточните поиск</div>
+                {% endif %}
+
+                <div class="btn-group-vertical" role="group" aria-label="результат поиска">
+                    {% for i in ar %}
+                        {#{{ pa(i) }}#}
+                        <a href="?search={{ get.search }}&level={{ get.level }}&now_type={{ get.now_type }}&show={{ i.id }}" 
+                           class="alert alert-secondary"
+                           {#<button#} 
+                           {#xtype="button"#} 
+                           {#class="btn btn-sm btn-light"#}
+                           {#</button>#}
+                           {#class="btn btn-light btn-sm"#}
+                           >{{ i.head|e }} (арт {{ i.a_catnumber|e }})</a>
+
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="col-9">
+
+
+                {% if get.show is defined %}
+
+                    {% set it = search_items1(db,get.show) %}
+                    {#{{ pa(it) }}#}
+
+
+
+                    {% set img1 = search_img(it.a_catnumber) %}
+                    {#-- {{ img1 }} --#}
+                    <img src="{{ img1 }}" alt="" border="0" style="max-width:200px; float: left;" />
+
+
+                    {#{{ get.option }}#}
+                    {% set nav_cat = shop__get_nav_cats(db, it.a_categoryid ) %}
+                    {#{{ pa(nav_cat) }}#}
+
+                    {% if nav_cat != false %}
+
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                {#<li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Library</li>#}
+                                {% for k in 5..1 if nav_cat['cat'~k] is not empty and nav_cat['cat'~k] != '00000126' %}
+                                    {#{{ nav_cat['cat'~k] }}#}
+                                    <li class="breadcrumb-item">{{ nav_cat['cat'~k~'_head'] }}</li>
+                                    {% endfor %}
+
+                            </ol>
+                        </nav>                            
+
+                    {% endif %}
+
+
+                    <h3>{{ it.head }}</h3>
+
+
+
+                    <table class="table table-sm table-striped">
+                        <tbody>
+                            {% for k,v in it %}
+                                <tr><td>
+                                        {{ k }}
+                                    </td><td>
+                                        {{ v }}
+                                    </td></tr>
+                                {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                    {% set ana = shop__get_analogi_items(db,it.a_catnumber ) %}
+                    {% if ana|length > 0 %}
+                        <div class="container-fluid" >
+                            {#{{ pa(ana) }}
+                            
+                                      [id] => 5722
+                   [head] => Пружина передняя Chery Amulet
+                   [a_id] => 00000576
+                   [a_categoryid] => ЦБ001061
+                   [a_catnumber] => A11-2902011
+                   [catnumber_search] => a112902011
+                   [a_price] => #}
+
+                            <div class="row" >
+                                <div class="col-12" >
+                                    <h3>Аналоги</h3>
+                                </div>
+
+                                {% for aa in ana %}
+                                    <div class="col-12 col-sm-6 col-md-4" >
+                                        <div class="alert alert-info">
+                                            <a href="?search={{ get.search|e }}&level={{ get.level }}&now_type={{ get.now_type ?? '' }}&show={{ aa.id }}">
+                                                <small>ищем артикул {{ aa.articul2}}</small>
+                                                <br/>
+                                                {{ aa.head }}
+                                                <br/>
+                                                Артикул:<b>{{ aa.a_catnumber }}</b> Цена:<b>{% if aa.a_price > 0 and aa.a_price|length > 1 %}{{ aa.a_price }}{% else %}не указана{% endif %}</b>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+                {% else %}
+                    Аналогов нет
+                {% endif %}
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
         {% if 1 == 2 %}
-        
-            {% if get.edit_id is defined and list.data[get.edit_id] is defined %}
+            <div class="grid">
 
-                {% include 'vendor/didrive_mod/items/1/didrive/t/body.form_add.htm' %}
+                {# list #}
 
-            {% else %}
+                {# если редактирование, то показываем форму редактирования #}
 
-                {% include 'vendor/didrive_mod/items/1/didrive/t/body.form_add.htm' %}
-                {% include 'vendor/didrive_mod/items/1/didrive/t/body.list_items.htm' %}
+                <p>данных для показа нет</p>
 
-            {% endif %}
+                {% if 1 == 2 %}
+
+                    {% if get.edit_id is defined and list.data[get.edit_id] is defined %}
+
+                        {% include 'vendor/didrive_mod/items/1/didrive/t/body.form_add.htm' %}
+
+                    {% else %}
+
+                        {% include 'vendor/didrive_mod/items/1/didrive/t/body.form_add.htm' %}
+                        {% include 'vendor/didrive_mod/items/1/didrive/t/body.list_items.htm' %}
+
+                    {% endif %}
+                {% endif %}
+
+
+            </div>
         {% endif %}
-
-        
     </div>
-</div>
+
+{% elseif now_type == 'norm' %}
+
+    -----
+
+{% endif %}

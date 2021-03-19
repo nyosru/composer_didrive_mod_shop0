@@ -1,6 +1,7 @@
 {% spaceless %}
 
     {#{{ pa(session) }}#}
+    {#{{ pa(cookie) }}#}
     
     {% set erer = shop__get_carts() %}
     {#{{ pa(erer) }}#}
@@ -89,7 +90,13 @@
                         {#                            <br/>
                                                     <br/>
                                                     <center><a href="/show/" class="btn btn-default xbtn-continue-shopping"><span style="color:green;" class="fa fa-plus" ></span> Добавить товары</a></center>
-                        #}                            
+                        #}          
+                        
+                        <br/>
+                        <br/>
+                        
+                        <p style="color:gray;">* - менеджер свяжется с Вами, согласует цену и срок доставки.</>
+                        
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="aside-shopping-cart-total">
@@ -120,18 +127,37 @@
                                     <br/>
                                     <br/>
                                     <span class="text xcalculate">Контактные данные</span></li>
+                                
                                 <li><label>Как Вас зовут: 
                                         <br/><input type="text" class="form-contol" 
                                                     style='max-width: 100%;'
                                                     name="io"
                                                     required=""
                                                     /></label></li>
+
                                 <li><label>Телефон: 
                                         <br/><input type="text" class="form-contol" 
                                                     style='max-width: 100%;'
                                                     name="phone"
                                                     required=""
                                                     /></label></li>
+
+                                <li><label>Ваш город: 
+                                        <br/><input type="text" class="form-contol" 
+                                                    style='max-width: 100%;'
+                                                    name="city"
+                                                    required=""
+                                                    value="Тюмень"
+                                                    /></label></li>
+
+                                <li id="dost1">Нужна доставка ? <span class="btn btn-sm btn-primary" onclick="$('#dost2').show('slow');$('#dost1').hide('slow');" >Да</span></li>
+
+                                <li id="dost2" style="display:none;" ><label>Адрес доставки
+                                        <br/><input type="text" class="form-contol" 
+                                                    style='max-width: 100%;'
+                                                    name="dost"
+                                                    /><br/>
+                                        {#<small>Заполните адрес доставки</small> #}</label></li>
 
                             </ul>
                             <div class="process">

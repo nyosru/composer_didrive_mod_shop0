@@ -20,15 +20,7 @@ if (1 == 1 || strpos($_SERVER['DOCUMENT_ROOT'], ':')) {
 if (isset($get['action']) && $get['action'] == 'scan_new_file') {
     
 } else {
-
-    define('IN_NYOS_PROJECT', TRUE);
-
-//    require( $_SERVER['DOCUMENT_ROOT'] . '/index.session_start.php' );
-//    require($_SERVER['DOCUMENT_ROOT'] . '/0.site/0.start.php');
-    // define('IN_NYOS_PROJECT', true);
-
-    require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-    // require( $_SERVER['DOCUMENT_ROOT'] . '/all/ajax.start.php' );
+    require $_SERVER['DOCUMENT_ROOT'] . '/vendor/didrive/base/start-for-microservice.php';
 }
 
 if (( isset($get['action']) && $get['action'] == 'scan_new_file' ) || (isset($_GET['action']) && $_GET['action'] == 'scan_new_file')) {
@@ -38,14 +30,14 @@ if (( isset($get['action']) && $get['action'] == 'scan_new_file' ) || (isset($_G
         //f\pa($now);
         // \f\pa($now, 2);
         // $amnu = \Nyos\nyos::get_menu($now['folder']);
-        
+
         \Nyos\nyos::getMenu();
         // $amnu = \Nyos\nyos::$menu;
 
         if (empty(\Nyos\nyos::$menu))
             throw new \Exception('пустое меню');
 
-        \f\pa( \Nyos\nyos::$menu, 2);
+        \f\pa(\Nyos\nyos::$menu, 2);
 
         // if (isset($amnu) && sizeof($amnu) > 0) {
         if (1 == 1) {
@@ -82,8 +74,7 @@ if (( isset($get['action']) && $get['action'] == 'scan_new_file' ) || (isset($_G
         } else {
             die('Спасибо');
         }
-        
-    } catch ( \Exception $exc ) {
+    } catch (\Exception $exc) {
 
         // echo $exc->getTraceAsString();
 
@@ -128,33 +119,42 @@ else {
         if (isset($_SESSION['cart'][$_REQUEST['id']]['kolvo'])) {
 
             if ($_REQUEST['action'] == 'shop__item_add') {
-                
-                if( empty($_SESSION['cart'][$_REQUEST['id']]['kolvo']) ){
-                $_SESSION['cart'][$_REQUEST['id']]['kolvo'] = 1;
-                }else{
-                $_SESSION['cart'][$_REQUEST['id']]['kolvo'] ++;
+
+                if (empty($_SESSION['cart'][$_REQUEST['id']]['kolvo'])) {
+                    $_SESSION['cart'][$_REQUEST['id']]['kolvo'] = 1;
+                } else {
+                    $_SESSION['cart'][$_REQUEST['id']]['kolvo'] ++;
                 }
-                
             } elseif ($_REQUEST['action'] == 'shop__item_remove') {
 
-                if ( !empty($_SESSION['cart'][$_REQUEST['id']]['kolvo']) && $_SESSION['cart'][$_REQUEST['id']]['kolvo'] > 0)
+                if (!empty($_SESSION['cart'][$_REQUEST['id']]['kolvo']) && $_SESSION['cart'][$_REQUEST['id']]['kolvo'] > 0)
                     $_SESSION['cart'][$_REQUEST['id']]['kolvo'] --;
             }
         }
 
-        \f\end2('окей', true, [ 'new_kolvo' => $_SESSION['cart'][$_REQUEST['id']]['kolvo'] ]);
+        \f\end2('окей', true, ['new_kolvo' => $_SESSION['cart'][$_REQUEST['id']]['kolvo']]);
     }
 
     //
     elseif (!empty($_REQUEST['action']) && $_REQUEST['action'] == 'add_item_to_cart') {
 
+        // $_COOKIE['cart'][$_REQUEST['aj_id']] = [];
         $_SESSION['cart'][$_REQUEST['aj_id']] = [];
+
+        $cart2 = [];
 
         foreach ($_REQUEST as $k => $v) {
             if (strpos($k, 'aj_') !== false) {
+
+                $cart2[str_replace('aj_', '', $k)] = $v;
                 $_SESSION['cart'][$_REQUEST['aj_id']][str_replace('aj_', '', $k)] = $v;
             }
         }
+
+//        $cart = unserialize( $_COOKIE['cart'] ?? [] );
+//        $cart[$_REQUEST['aj_id']] = $cart2;
+//        setcookie("cart", serialize($cart), time() + 60 * 60 * 24 * 30);
+        // session_write_close();
 
         \f\end2('добавлено', true,
                 [

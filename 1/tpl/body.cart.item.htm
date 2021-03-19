@@ -19,12 +19,15 @@
             {% set img1 = false %}
             {% endif %}
             {#{{ img1 }}#}
+            <a href="/show/i/{{ item.id }}/{{ f__translit(item.head,'uri2') }}/" >
             <img src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="images" class="img-responsive">
+            </a>
         </td>
         <td class="product-name">
 
-            {#<a href="#">{{ item.name }}</a>#}
+            <a href="/show/i/{{ item.id }}/{{ f__translit(item.head,'uri2') }}/" >
             {{ item.head }}
+            </a>
 
             <input type="hidden" 
                    name="items[{{ item.id }}]"
@@ -34,12 +37,15 @@
         </td>
         <td class="product-price">
 
-            <p class="price" id="price{{ item.id}}" price="{{ item.a_price }}" >{% if item.a_price > 0 %}{{ item.a_price|number_format(2,',','`') }}{% else %}- - -{% endif %}</p>
+            
+            <p class="price" id="price{{ item.id}}" price="{{ item.a_price }}" >{% if item.a_price > 0 %}{{ item.a_price|number_format(2,',','`') }}{% else %}заказная<br/>позиция*{% endif %}</p>
             <input 
                 type="hidden" 
                 name="price[{{ item.id }}]"
                 value="{% if item.a_price > 0 %}{{ item.a_price }}{% else %}0{% endif %}" 
                 />
+            
+            
 
         </td>
         <td class="product-quantity" >
@@ -68,7 +74,7 @@
 
                 <input type="text" 
                        readonly=""
-                       style="display:inline-block; width:80px; xfloat:left;"
+                       style="display:inline-block; width:40px; xfloat:left; text-align: center;"
 
                        id="quantity{{ item.id }}"
 
@@ -109,7 +115,7 @@
                     {% else %}
                         -
                     {% endif %}
-                {% else %}обозначим при заказе{% endif %}
+                {% else %}-{% endif %}
                 {#{{ items_in_cart[item.id]['a_price'] ? ( items_in_cart[item.id]['a_price'] * item.kolvo )|number_format(2,',','`') : 'обозначим при заказе' }}#}
             </p>
         </td>

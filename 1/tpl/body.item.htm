@@ -6,7 +6,7 @@
         {{ pa(item.cat_id) }}
     {% endif %}
 
-    <div class="col-xs-6 col-sm-6 col-md-4 {% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %}col-xl-4 col-lg-3{% else %}col-xl-3 col-lg-2{% endif %} xproduct-list-item">
+    <div class="col-xs-12 col-sm-6 col-md-4 {% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %}col-xl-4 col-lg-3{% else %}col-xl-3 col-lg-2{% endif %} xproduct-list-item" style="margin-bottom: 3vh; margin-top: 3vh;">
     {#<div class="col-xs-6 col-sm-6 col-md-4 col-xl-3 col-lg-2">#}
         <div class="product-item-img">
 
@@ -16,6 +16,8 @@
                 {% set img1 = false %}
             {% endif %}
 
+            <a href="/show/i/{{ item.id }}/{{ f__translit(item.head,'uri2') }}/" >
+            
             {# <a href="#"><img src="img/products/product1.png" alt="images" class="img-responsive"></a> #}
             {#<a href="#">#}
             <img 
@@ -23,13 +25,19 @@
                 />{#</a>#}
             {#<div class="label label-2 red label-top-20">Hot</div>#}
 
+            </a>
+            
         </div>
 
         <div class="product-item-info">
 
             <div class="item_name_vitrin_resize" >
                 <h3 class="item_name_vitrin" >
-                    <a href="#" onclick="return false;" title="{{ item.head }}" class="black" >{{ item.head|replace({'\\"':'"'}) }}</a>
+                    <a 
+                        {#href="#" #}
+                        href="/show/i/{{ item.id }}/{{ f__translit(item.head,'uri2') }}/"
+                        {#onclick="return false;" #}
+                        title="{{ item.head|e }}" class="black" >{{ item.head|replace({'\\"':'"'}) }}</a>
                 </h3>
             </div>
 
@@ -92,7 +100,7 @@
 
                             > 
                         <span class="">
-                            Добавить в корзину
+                            Добавить в&nbsp;корзину
                         </span>
                     </button>
 
@@ -101,7 +109,7 @@
                        id="but_ok_{{ item.id }}"
                        style="margin-top:0;display:none;"
                        > 
-                        В корзине
+                        В&nbsp;корзине
                     </a>
 
                 </center>
@@ -232,9 +240,10 @@
                     <div class="button-group">
                         <button class="shop__add_to_cart addToCart btn btn-default " 
                                 style="width: auto; xdisplay: inline-block;"
-                                xtype="button" xdata-toggle="tooltip" 
-                                xtitle="" onclick="cart.add('42', '1');" 
-                                xdata-original-title="Add to Cart"
+                                {#xtype="button" xdata-toggle="tooltip" #}
+                                {#xtitle="" #}
+                                {#onclick="cart.add('42', '1');" #}
+                                {#xdata-original-title="Add to Cart"#}
 
                                 action="add_item_to_cart"
 
@@ -262,6 +271,7 @@
                            > 
                             В корзине
                         </a>
+
                     </div>
 
                 </div><!-- right block -->

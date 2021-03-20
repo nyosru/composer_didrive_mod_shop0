@@ -22,18 +22,18 @@
 
             <div class="col-xs-12 col-sm-4 bg-info" style="border-radius: 3px;">
                 {#инфа о товаре#}
-
+                {#{{ pa(item1) }}#}
+                
                 <br/>
                 <br/>
 
                 <h3>{{ item1.head }}</h3>
-                {% if item1.comment is defined and item1.comment|length > 2%}<p>&nbsp;</br/>{{ item1.comment }}</p>{% endif %}
+                {% if item1.comment is defined and item1.comment|length > 2%}<p>&nbsp;</br/>{{ item1.comment|raw }}</p>{% endif %}
 
                 <br/>
                 <br/>
 
                 <p>{% if item1.a_price > 0 %}Цена:&nbsp;{{ item1.a_price|number_format(0,'','`') }}&nbsp;р{% else %}Заказная позиция{% endif %}</p>
-
 
                 <br/>
                 <br/>

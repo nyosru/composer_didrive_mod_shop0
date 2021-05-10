@@ -29,9 +29,16 @@
             {{ item.head }}
             </a>
 
+            {#{{ pa(item) }}#}
+            
             <input type="hidden" 
                    name="items[{{ item.id }}]"
                    value="{{ item.head }}" 
+                   />
+
+            <input type="hidden" 
+                   name="opis[{{ item.id }}]"
+                   value="{{ item.opis ?? '' }}" 
                    />
 
         </td>

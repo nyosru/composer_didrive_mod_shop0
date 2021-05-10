@@ -4,6 +4,8 @@ $vv['in_body_end'][] = '<script src="https://unpkg.com/masonry-layout@4/dist/mas
 
 if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items']) && !empty($_POST['items'])) {
 
+     // \f\pa($_POST);     die();
+    
     $msg = 'Новый заказ'
             . PHP_EOL
             . htmlspecialchars($_REQUEST['io'])
@@ -22,16 +24,20 @@ if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items']) && !
     
 //    \f\pa($order_items);
 //die();
-    
+
     foreach ($_POST['items'] as $k => $v) {
-        $msg .= PHP_EOL . PHP_EOL . $v . PHP_EOL . $order_items[$k]['a_catnumber'] ;
+
+        $msg .= PHP_EOL . PHP_EOL . $v 
+            . ( $order_items[$k]['a_catnumber'] ? PHP_EOL.$order_items[$k]['a_catnumber'] : '' ) 
+            . ( $_POST['opis'][$k] ? PHP_EOL.$_POST['opis'][$k] : '' );
 
         if (!empty($_POST['price'][$k]) && $_POST['price'][$k] > 0) {
-            $msg .= PHP_EOL . $_POST['quantity'][$k] . ' шт. * ' . $_POST['price'][$k] . ' р = ' . ( $_POST['quantity'][$k] * $_POST['price'][$k] ) . ' р';
+            $msg .= PHP_EOL . $_POST['quantity'][$k] . ' шт. * ' . $_POST['price'][$k] . ' р ( '. ceil($_POST['price'][$k]/120*100) .' ) = ' . ( $_POST['quantity'][$k] * $_POST['price'][$k] ) . ' р';
             $summa += ( $_POST['quantity'][$k] * $_POST['price'][$k] );
         } else {
             $msg .= PHP_EOL . $_POST['quantity'][$k] . ' шт. под заказ';
         }
+
     }
 
     $msg .= PHP_EOL . PHP_EOL . 'Итого: ' . number_format($summa, '0', '.', '`') . ' р';
@@ -42,7 +48,7 @@ if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items']) && !
     $_SESSION['cart'] = [];
     \f\redirect('/', 'index.php', ['level' => 'show', 
         // 'option' => 'cart', 
-        'warn_order' => 'Заказ принят, позвоним в ближайшее время уточнить детали заказа, указали телефон: '. htmlspecialchars($_REQUEST['phone']) 
+        'warn_order' => 'Заказ принят, менеджер свяжется с вами для уточнения деталей заказа по указанному номеру телефона: '. htmlspecialchars($_REQUEST['phone']) 
         ]);
 }
 

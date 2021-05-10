@@ -10,7 +10,6 @@
     {% else %}
 
 
-
         {# если показываем 1 товар #}
         {% if get.option is defined and get.option == 'i' %}
 
@@ -35,16 +34,11 @@
             {% set show_on = ( page_now0 * on1page ) + 1  %}
             {% set show_off = ( show_on + on1page ) - 1  %}
 
-        {% endif %}        
-
-
-
-
-
+        {% endif %}
 
 
         <section class="shop-list-v2-page">
-            
+
             <div class="{% if get.option is defined and get.option == 'i' %} container {% else %} container-fluid {% endif %}">
 
                 <div class="heading-sub">
@@ -53,268 +47,430 @@
 
                 <div class="widget-product-list">
 
-                    <div class="row">
+                    <div class="container">
+                        <div class="row">
+                            <div
+                                class="col-md-12 col-xs-12">
+
+                                {# верхняя строчка списка итемов #}
+                                {% if 1 == 1 %}
+                                    <div xclass="filter-block bd">
+
+                                        <div class="row" style="padding-bottom: 3vh;">
+
+                                            <div class="col-xs-12 col-md-10" style="padding-left:5%;">
 
 
-                        <div class="col-md-12 col-xs-12">
+                                                {% if get.option is defined and get.option == 'i' %}
 
-                            {# верхняя строчка списка итемов #}
-                            {% if 1 == 1 %}
-                                <div xclass="filter-block bd">
+                                                    {% set nav_cat = shop__get_nav_cats(db, item1.a_categoryid) %}
 
-                                    <div class="row" style="padding-bottom: 3vh;">
+                                                {% else %}
 
-                                        <div class="col-xs-12 col-md-10" style="padding-left:5%;" >
+                                                    {#{{ get.option }}#}
+                                                    {% set nav_cat = shop__get_nav_cats(db, get.option) %}
+                                                    {#{{ pa(nav_cat) }}#}
 
-
-                                            {% if get.option is defined and get.option == 'i' %}
-
-                                                {% set nav_cat = shop__get_nav_cats(db, item1.a_categoryid) %}
-
-                                            {% else %}
-
-                                                {#{{ get.option }}#}
-                                                {% set nav_cat = shop__get_nav_cats(db, get.option) %}
-                                                {#{{ pa(nav_cat) }}#}
-
-                                            {% endif %}
+                                                {% endif %}
 
 
-                                            {% if nav_cat != false %}
-                                                <ul class="other-link-sub xpull-right">
-                                                    <li><a href="/show/">Авто-АС</a></li>
+                                                {% if nav_cat != false %}
+                                                    <ul class="other-link-sub xpull-right">
+                                                        <li>
+                                                            <a href="/show/">Авто-АС</a>
+                                                        </li>
                                                         {% for k in 5..1 if nav_cat['cat'~k] is not empty and nav_cat['cat'~k] != '00000126' %}
                                                             {#{{ nav_cat['cat'~k] }}#}
-                                                        <li><a href="/show/{{ nav_cat['cat'~k] }}/">{{ nav_cat['cat'~k~'_head'] }}</a></li>
+                                                            <li>
+                                                                <a href="/show/{{ nav_cat['cat'~k] }}/">{{ nav_cat['cat'~k~'_head'] }}</a>
+                                                            </li>
                                                         {% endfor %}
 
-                                                    {#<li><a class="active" href="#shop">Shop</a></li>#}
+                                                        {#<li><a class="active" href="#shop">Shop</a></li>#}
 
-                                                    {#{% if get.option is defined and get.option == 'i' %}
-                                                        <li>{{ item1.head }}</li>
-                                                    {% endif %}#}
+                                                        {#{% if get.option is defined and get.option == 'i' %}
+                                                                                                                                                                                                        <li>{{ item1.head }}</li>
+                                                                                                                                                                                                        {% endif %}#}
 
-                                                </ul>
-                                            {% endif %}
+                                                    </ul>
+                                                {% endif %}
 
-                                        </div>                                        
+                                            </div>
 
-                                        {# если показываем 1 товар #}
-                                        {% if get.option is defined and get.option == 'i' %}
-                                        {% else %}
+                                            {# если показываем 1 товар #}
+                                            {% if get.option is defined and get.option == 'i' %}
+                                            {% else %}
 
-                                            {% if get.search is defined or get.option is defined %}
-                                                <div class="col-md-2 hidden-xs">
-                                                    <div class="box box-view pull-right" style="padding-right:5%; font: 14px/36px 'Open Sans', sans-serif;">
-                                                        <span>Товары {{ show_on }}–{% if items|length < show_off %}{{ items|length }}{% else %}{{ show_off }}{% endif %} из {{ items|length }}</span>
+                                                {% if get.search is defined or get.option is defined %}
+                                                    <div class="col-md-2 hidden-xs">
+                                                        <div class="box box-view pull-right" style="padding-right:5%; font: 14px/36px 'Open Sans', sans-serif;">
+                                                            <span>Товары
+                                                                {{ show_on }}–
+                                                                {% if items|length < show_off %}
+                                                                    {{ items|length }}
+                                                                {% else %}
+                                                                    {{ show_off }}
+                                                                {% endif %}
+                                                                из
+                                                                {{ items|length }}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                {% endif %}
+
                                             {% endif %}
 
-                                        {% endif %}
+                                        </div>
 
                                     </div>
 
-                                </div>
-
-                            {% endif %}
-
-                        </div>                        
-
-
-                        {% if get.option is defined and get.option == 'i' %}
-                        {% else %}
-
-                            {% set nav_cat_down = shop__get_nav_cats_down(db, get.option) %}
-                            {#{{ pa(nav_cat_down,2) }}#}
-
-                            {% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %}
-                                <div class="col-md-3 col-xs-12">
-                                    <div class="menu2_block" >
-
-                                        {#{% set get1 = get %}#}
-                                        {#{% set get1 = get1|merge( { 'option' : k , 'up_cat' : ( get.up_cat ?? get.option ) } ) %}#}
-
-                                        {% for k,v in nav_cat_down.in %}
-                                            {#<a href="index.php?{{ f__http_build_query(get1) }}" class="item_menu2" >{{ v }}</a>#}
-                                            <a href="/show/{{ k }}/" class="item_menu2" >{{ v }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-
-                        {% endif %}
-
-
-                        {% if get.option is defined and get.option == 'i' %}
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xs-12 text-center">
-
-                                {# номер товара {{ get.ext1 }} #}
-                                {% include constant('dir_mods_mod_vers_tpl')~'body.item1.htm' %}
-
-                                {#{{ pa(get) }}#}
-                                {#{{ pa(item1) }}#}
+                                {% endif %}
 
                             </div>
-                        </div>
-                        <div class="row">
 
-                        {% else %}
 
-                            <div 
-                                class="
+                            {# 
+                                                                                            <div class="row">
+                                                                                                                                                            <div class="col-12 text-center">
+                                                                                                    
+                                                                                                                                                                    <iframe 
+                                                                                                                                                                    style="width:1000px; height: 300px;"
+                                                                                                                                                                    src="//{{ server.HTTP_HOST }}/vendor/didrive_api/allautoparts/1/api.php?search={{ get.search }}" ></iframe>
+                                                                                                    
+                                                                                                                                                                    <iframe 
+                                                                                                                                                                    style="width:1000px; height: 300px;"
+                                                                                                                                                                    src="//{{ server.HTTP_HOST }}/vendor/didrive_api/allautoparts/1/index.php" ></iframe>
+                                                                                                                                                            </div>
+                                                                                                                                                    </div> 
+                                                                                                                                                    #}
+
+                            {% if get.option is defined and get.option == 'i' %}
+                            {% else %}
+
+                                {% set nav_cat_down = shop__get_nav_cats_down(db, get.option) %}
+                                {#{{ pa(nav_cat_down,2) }}#}
+
                                 {% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %}
-                                    col-md-9 col-xs-12
-                                {% else %} 
-                                    col-md-12 col-xs-12
-                                {% endif %}
-                                ">
+                                    <div class="col-md-3 col-xs-12">
+                                        <div class="menu2_block">
 
-                                {# список итемов #}
-                                <div class="product-list grid_full grid_sidebar grid-uniform container-fluid">
+                                            {#{% set get1 = get %}#}
+                                            {#{% set get1 = get1|merge( { 'option' : k , 'up_cat' : ( get.up_cat ?? get.option ) } ) %}#}
 
-                                    {#{% include constant('dir_mods_mod_vers_tpl')~'body.cats_in.htm' %}#}
-                                    {% set nn = 0 %}
-                                    {% set nn0 = 0 %}
-                                    {% set last_articul = '' %}
-                                    {% for k, item in items %}
-
-                                        {% if show_on == 1 or ( nn >= show_on and nn <= show_off ) %}
-                                            {% if nn0 <= on1page %}
-
-                                                {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
-                                                {#{{ pa(item) }}#}
-                                                {% set last_articul = item.a_catnumber %}
-
-                                            {% endif %}
-                                            {% set nn0 = nn0+1 %}
-                                        {% endif %}
-
-                                        {% set nn = nn + 1 %}
-
-                                    {% endfor %}
-
-                                </div>
-
-
-
-                                {% if nn == 1 and last_articul|length > 2 %}
-
-                                    {#{% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}#}
-                                    {#{{ pa(last_articul) }}#}
-                                    {#{{ pa(item) }}#}
-
-                                    {%  set items_analog = shop__get_analogi_items( db, last_articul ) %}
-                                    {#{{ pa(items_analog) }}#}
-                                    {% if items_analog|length > 0 %}
-
-                                        <div class="col-12 text-center" style="padding: 3vh 0;" >
-                                            <h3>Аналоги других производителей</h3>
-                                        </div>
-
-                                        {# список итемов #}
-                                        <div class="product-list grid_full grid_sidebar grid-uniform container-fluid">
-                                            {% for item in items_analog %}
-                                                {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+                                            {% for k,v in nav_cat_down.in %}
+                                                {#<a href="index.php?{{ f__http_build_query(get1) }}" class="item_menu2" >{{ v }}</a>#}
+                                                <a href="/show/{{ k }}/" class="item_menu2"> {{ v }}</a>
                                             {% endfor %}
                                         </div>
+                                    </div>
+                                {% endif %}
+
+                            {% endif %}
+
+
+                            {% if get.option is defined and get.option == 'i' %}
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-12 col-xs-12 text-center">
+
+                                    {# номер товара {{ get.ext1 }} #}
+                                    {% include constant('dir_mods_mod_vers_tpl')~'body.item1.htm' %}
+
+                                    {#{{ pa(get) }}#}
+                                    {#{{ pa(item1) }}#}
+
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            {% else %}
+
+                                <div
+                                    class=" {% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %} col-md-9 col-xs-12 {% else %} col-md-12 col-xs-12 {% endif %} ">
+
+                                    {# список итемов #}
+                                    <div
+                                        class="product-list grid_full grid_sidebar grid-uniform container-fluid">
+
+                                        {#{% include constant('dir_mods_mod_vers_tpl')~'body.cats_in.htm' %}#}
+                                        {% set nn = 0 %}
+                                        {% set nn0 = 0 %}
+                                        {% set last_articul = '' %}
+                                        {% for k, item in items %}
+
+                                            {% if show_on == 1 or ( nn >= show_on and nn <= show_off ) %}
+                                                {% if nn0 <= on1page %}
+
+                                                    {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+                                                    {#{{ pa(item) }}#}
+                                                    {% set last_articul = item.a_catnumber %}
+
+                                                {% endif %}
+                                                {% set nn0 = nn0+1 %}
+                                            {% endif %}
+
+                                            {% set nn = nn + 1 %}
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                    {% if nn == 1 and last_articul|length > 2 %}
+
+                                        {#{% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}#}
+                                        {#{{ pa(last_articul) }}#}
+                                        {#{{ pa(item) }}#}
+
+                                        {%  set items_analog = shop__get_analogi_items( db, last_articul ) %}
+                                        {#{{ pa(items_analog) }}#}
+                                        {% if items_analog|length > 0 %}
+
+                                            <div class="col-12 text-center" style="padding: 3vh 0;"> <h3>Аналоги других производителей</h3>
+                                            </div>
+
+                                            {# список итемов #}
+                                            <div class="product-list grid_full grid_sidebar grid-uniform container-fluid">
+                                                {% for item in items_analog %}
+                                                    {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+                                                {% endfor %}
+                                            </div>
+
+                                        {% endif %}
 
                                     {% endif %}
 
-                                {% endif %}
+                                    {% if items|length > on1page and ( get.search is defined or ( get.option is defined and get.option != 'index' ) ) %}
 
+                                        <center>
+                                            <div class="product-pagination">
+                                                <ul class="pagination">
 
+                                                    {% if page_now > 1 %}
 
-                                {% if items|length > on1page and ( get.search is defined or ( get.option is defined and get.option != 'index' ) ) %}
-
-                                    <center>
-                                        <div class="product-pagination">
-                                            <ul class="pagination">
-
-                                                {% if page_now > 1 %}
-
-                                                    <li><a href="/show/{{ get.option }}/{{ page_now - 1 }}/"><i class="ion-chevron-left"></i></a></li>
-                                                        {% endif %}
-
-                                                {% set skip_page_in_start = false %}
-                                                {% set skip_page_in_end = false %}
-
-                                                {% for i in range(1,kolvo_page,1) %}
-
-                                                    {% if i == page_now or i == kolvo_page or i == 1 %}
-
-                                                        <li {% if page_now == i %} class="active" {% endif %} >
-                                                            {% if get.search is defined %}
-                                                                {% set get1 = get %}
-                                                                {% set get1 = get1|merge({ 'page': i }) %}
-                                                                <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
-                                                            {% else %}
-                                                                <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
-                                                            {% endif %}
+                                                        <li>
+                                                            <a href="/show/{{ get.option }}/{{ page_now - 1 }}/">
+                                                                <i class="ion-chevron-left"></i>
+                                                            </a>
                                                         </li>
-
-                                                    {% elseif i < page_now %}
-
-                                                        {% if i > ( page_now - show_page_in_list ) %}
-                                                            <li >
-                                                                {% if get.search is defined %}
-                                                                    {% set get1 = get %}
-                                                                    {% set get1 = get1|merge({ 'page': i }) %}
-                                                                    <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
-                                                                {% else %}
-                                                                    <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
-                                                                {% endif %}
-                                                            </li>
-                                                        {% elseif skip_page_in_start == false %}
-                                                            {% set skip_page_in_start = true %}
-                                                            <li >
-                                                                <a href="#" onclick="return false;" >..</a>
-                                                            </li>
-                                                        {% endif %}
-
-                                                    {% elseif i > page_now %}
-                                                        {% if i < ( page_now + show_page_in_list ) %}
-                                                            <li >
-                                                                {% if get.search is defined %}
-                                                                    {% set get1 = get %}
-                                                                    {% set get1 = get1|merge({ 'page': i }) %}
-                                                                    <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
-                                                                {% else %}
-                                                                    <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
-                                                                {% endif %}
-                                                            </li>
-                                                        {% elseif skip_page_in_end == false %}
-                                                            {% set skip_page_in_end = true %}
-                                                            <li >
-                                                                <a href="#" onclick="return false;" >..</a>
-                                                            </li>
-                                                        {% endif %}
                                                     {% endif %}
 
-                                                {% endfor %}
+                                                    {% set skip_page_in_start = false %}
+                                                    {% set skip_page_in_end = false %}
 
-                                                {% if page_now < kolvo_page %}
-                                                    <li>
-                                                        <a href="/show/{{ get.option }}/{{ page_now + 1 }}/"><i class="ion-chevron-right"></i></a>
-                                                    </li>
-                                                {% endif %}
+                                                    {% for i in range(1,kolvo_page,1) %}
 
-                                            </ul>
+                                                        {% if i == page_now or i == kolvo_page or i == 1 %}
+
+                                                            <li {% if page_now == i %} class="active" {% endif %}>
+                                                                {% if get.search is defined %}
+                                                                    {% set get1 = get %}
+                                                                    {% set get1 = get1|merge({ 'page': i }) %}
+                                                                    <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
+                                                                {% else %}
+                                                                    <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                                {% endif %}
+                                                            </li>
+
+                                                        {% elseif i < page_now %}
+
+                                                            {% if i > ( page_now - show_page_in_list ) %}
+                                                                <li>
+                                                                    {% if get.search is defined %}
+                                                                        {% set get1 = get %}
+                                                                        {% set get1 = get1|merge({ 'page': i }) %}
+                                                                        <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
+                                                                    {% else %}
+                                                                        <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% elseif skip_page_in_start == false %}
+                                                                {% set skip_page_in_start = true %}
+                                                                <li>
+                                                                    <a href="#" onclick="return false;">..</a>
+                                                                </li>
+                                                            {% endif %}
+
+                                                        {% elseif i > page_now %}
+                                                            {% if i < ( page_now + show_page_in_list ) %}
+                                                                <li>
+                                                                    {% if get.search is defined %}
+                                                                        {% set get1 = get %}
+                                                                        {% set get1 = get1|merge({ 'page': i }) %}
+                                                                        <a href="/index.php?{{ f__http_build_query( get1 ) }}">{{ i }}</a>
+                                                                    {% else %}
+                                                                        <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% elseif skip_page_in_end == false %}
+                                                                {% set skip_page_in_end = true %}
+                                                                <li>
+                                                                    <a href="#" onclick="return false;">..</a>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endif %}
+
+                                                    {% endfor %}
+
+                                                    {% if page_now < kolvo_page %}
+                                                        <li>
+                                                            <a href="/show/{{ get.option }}/{{ page_now + 1 }}/">
+                                                                <i class="ion-chevron-right"></i>
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+
+                                                </ul>
+                                            </div>
+                                        </center>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {# строчка с результатами поиска #}
+                        {% if ( get.search is defined or get.search2 is defined ) and get.page is not defined %}
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <div id="show__search_loading">поиск заказных позиций в базе магазина
+                                        <img src="/vendor/didrive/base/img/load.gif" border="0"/></div>
+
+                                    <div id="show__search_tov_other_shop" style="display:none;" search="{{ get.search ?? get.search2 }}" s="222">
+
+                                        <style>
+
+                                            .price_inf td {
+                                                text-align: left;
+                                            }
+
+                                            .price_inf thead {
+                                                position: sticky;
+                                                top: 0;
+                                                background-color: white;
+                                            }
+
+                                            .wind2 {
+                                                max-height: 500px;
+                                                width: 100%;
+                                                {#border: 2px solid gray;#}
+                                                overflow: auto;
+                                            }
+
+                                            .price_inf th,
+                                            .price_inf tr td:nth-child(1),
+                                            .price_inf tr td:nth-child(3),
+                                            .price_inf tr td:nth-child(4),
+                                            .price_inf tr td:nth-child(5),
+                                            .price_inf tr td:nth-child(6)
+                                            { text-align: center; }
+                                            
+                                            
+                                        </style>
+
+                                        <div class="wind">
+
+                                            <div class="row">
+                                                <div class="col-xs-12">
+
+                                                    <ul class="nav nav-tabs">
+                                                        {#                                <li role="presentation" class="active"><a  onclick="return false;" href="#">Заказные позиции</a></li>#}
+                                                        <li role="presentation" class="active"><a  onclick="return false;" href="#">Детали с удалённых складов</a></li>
+                                                    </ul>
+
+                                                </div>                
+                                            </div>                                               
+                                            <br/>
+                                            <br/>
+                                            <div class="wind2">    
+                                                
+                                                <table class="table table-striped price_inf">
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th>Артикул</th>
+                                                            
+                                                            {# //    [ManufacturerName] => KNECHT/MAHLE #}
+                                                            {# //    [ProductName] => Фильтр масляный (Mahle Фильтр масляный) #}
+                                                            
+                                                            <th>Название</th>
+                                                            <th>Срок<br/>поставки</th>
+                                                            <!-- {# //    [Quantity] => 22 #} -->
+                                                            <th>Кол-во<br/>на&nbsp;складе
+                                                            </th>
+                                                            {# //    [Price] => 303.00 #}
+                                                            <th>Цена ₽</th>
+                                                            <th>
+                                                                Заказать
+                                                            </th>
+
+
+                                                            {# // ( #}
+                                                            {# //    [AnalogueCode] => OC47 #}
+                                                            {# //    [AnalogueCodeAsIs] => OC47 #}
+                                                            {# //    [AnalogueManufacturerName] => KNECHT/MAHLE #}
+                                                            {# //    [AnalogueWeight] => 0.000 #}
+                                                            {# //    [CodeAsIs] => OC47 #}
+                                                            {# //    [DeliveryVariantPriceAKiloForClientDescription] =>  #}
+                                                            {# //    [DeliveryVariantPriceAKiloForClientPrice] => 0.00 #}
+                                                            {# //    [DeliveryVariantPriceNote] =>  #}
+                                                            {# //    [PriceListItemDescription] =>  #}
+                                                            {# //    [PriceListItemNote] => [OC47]MAHLE/KNECHT #}
+                                                            {# //    [IsAvailability] => 1 #}
+                                                            {# //    [IsCross] => 0 #}
+                                                            {# //    [LotBase] => 1 #}
+                                                            {# //    [LotType] => 0 #}
+                                                            {# //    [OfferName] => MSC-STC-3438 #}
+                                                            {# //    [PeriodMin] => 5 #}
+                                                            {# //    [PeriodMax] => 5 #}
+                                                            {# //    [PriceListDiscountCode] => 583757 #}
+                                                            {# //    [SupplierID] => 1513 #}
+                                                            {# //    [GroupTitle] =>  #}
+                                                            {# //    [Reference] => 901911655 #}
+                                                            {# // ) #}
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            {# //    [ManufacturerName] => KNECHT/MAHLE #}
+                                                            {# //    [ProductName] => Фильтр масляный (Mahle Фильтр масляный) #}
+                                                            <td>
+                                                                название
+                                                            </td>
+                                                            {# //    [Quantity] => 22 #}
+                                                            <td>
+                                                                кол-во на складе
+                                                            </td>
+                                                            {# //    [Price] => 303.00 #}
+                                                            <td>
+                                                                цена
+                                                            </td>
+                                                            <td>
+                                                                заказать
+                                                            </td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
                                         </div>
-                                    </center>
-
-                                {% endif %}
-
+                                    </div>
+                                </div>
                             </div>
-
                         {% endif %}
 
+
+
                     </div>
+
                 </div>
             </div>
-        </section>    
+        </section>
 
 
     {% endif %}

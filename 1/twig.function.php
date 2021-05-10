@@ -9,7 +9,7 @@
 // });
 // $twig->addFunction($function);
 
-$function = new Twig_SimpleFunction('shop__get_nav_cats', function ( $db, $cat_id ) {
+$function = new Twig_SimpleFunction('shop__get_nav_cats', function ($db, $cat_id) {
 
     $sql = 'SELECT '
             . ' c1.a_id cat1, '
@@ -37,17 +37,17 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats', function ( $db, $cat_i
 });
 $twig->addFunction($function);
 
-$function = new Twig_SimpleFunction('search_items', function ( $db, $search = '' ) {
+$function = new Twig_SimpleFunction('search_items', function ($db, $search = '') {
 
-    if( empty($search) )
+    if (empty($search))
         return false;
-    
+
     $sql = 'SELECT i.id, 
             i.head, 
             i.a_catnumber '
-        . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i '
-        . ' WHERE ( i.head LIKE :s OR i.a_catnumber LIKE :s ) AND i.status = \'show\' '
-        . ' LIMIT 100 ; ';
+            . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i '
+            . ' WHERE ( i.head LIKE :s OR i.a_catnumber LIKE :s ) AND i.status = \'show\' '
+            . ' LIMIT 100 ; ';
 
     $ff = $db->prepare($sql);
     $ff->execute([':s' => '%' . $search . '%']);
@@ -56,17 +56,16 @@ $function = new Twig_SimpleFunction('search_items', function ( $db, $search = ''
 $twig->addFunction($function);
 
 
-$function = new Twig_SimpleFunction('search_items1', function ( $db, $id ) {
-    
+$function = new Twig_SimpleFunction('search_items1', function ($db, $id) {
+
     $sql = 'SELECT * '
-        . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i '
-        . ' WHERE i.id = :i AND i.status = \'show\' '
-        . ' LIMIT 1 ; ';
+            . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i '
+            . ' WHERE i.id = :i AND i.status = \'show\' '
+            . ' LIMIT 1 ; ';
 
     $ff = $db->prepare($sql);
-    $ff->execute([':i' => $id ]);
+    $ff->execute([':i' => $id]);
     return $ff->fetch();
-    
 });
 $twig->addFunction($function);
 
@@ -77,7 +76,7 @@ $twig->addFunction($function);
 /**
  * получаем список аналогов товара если есть
  */
-$function = new Twig_SimpleFunction('shop__get_analogi_items', function ( $db, $analog ) {
+$function = new Twig_SimpleFunction('shop__get_analogi_items', function ($db, $analog) {
 
     $sql = 'SELECT '
             . ' i.* , a.art_analog articul2'
@@ -96,7 +95,7 @@ $twig->addFunction($function);
 
 
 
-$function = new Twig_SimpleFunction('shop__get_carts', function ( ) {
+$function = new Twig_SimpleFunction('shop__get_carts', function () {
 
     // $_SESSION[] = 123;
     //\f\pa($_SESSION);
@@ -111,7 +110,7 @@ $twig->addFunction($function);
 
 
 
-$function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ( $db, $cat_id ) {
+$function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ($db, $cat_id) {
 
     $sql = 'SELECT '
             . ' c1.a_id cat1, '
@@ -154,7 +153,7 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ( $db, $
 $twig->addFunction($function);
 
 
-$function = new Twig_SimpleFunction('get_cats_nav', function ( $db, $cat_now = null ) {
+$function = new Twig_SimpleFunction('get_cats_nav', function ($db, $cat_now = null) {
 
     if (empty($cat_now))
         return false;
@@ -200,7 +199,7 @@ $function = new Twig_SimpleFunction('get_cats_nav', function ( $db, $cat_now = n
 });
 $twig->addFunction($function);
 
-$function = new Twig_SimpleFunction('search_img', function ( $item ) {
+$function = new Twig_SimpleFunction('search_img', function ($item) {
 
     if (empty($item))
         return false;
@@ -254,7 +253,7 @@ function search_cat_inner(array $cats_ar, $now_cat = null, $id_cat = null) {
     return $return;
 }
 
-$function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = null, $a_id = null, $search = '' ) {
+$function = new Twig_SimpleFunction('shop__get_items', function ($db, $cat = null, $a_id = null, $search = '') {
 
     // \f\pa( [ $cat , $a_id , $search ] );
 
@@ -296,17 +295,21 @@ $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = nu
 
     if (!empty($search)) {
 
-        $s0 = explode(' ', $search);
-        if (sizeof($s0) > 1) {
-            foreach ($s0 as $kk => $vv) {
-                if (!empty($vv)) {
-                    \Nyos\mod\items::$liked_and['head'][] = $vv;
-                }
-            }
-        } else {
-            \Nyos\mod\items::$liked_or['head'] = $search;
-            \Nyos\mod\items::$liked_or['catnumber_search'] = \f\translit($search, 'uri3');
-        }
+        //$s0 = explode(' ', $search);
+        $s0 = \f\translit($search, 'uri3');
+
+//        if ( sizeof($s0) > 1) {
+//            foreach ($s0 as $kk => $vv) {
+//                if (!empty($vv)) {
+//                    \Nyos\mod\items::$liked_and['head'][] = $vv;
+//                }
+//            }
+//            
+//        } else {
+
+        \Nyos\mod\items::$liked_or['head'] = $search;
+        \Nyos\mod\items::$liked_or['catnumber_search'] = \f\translit($search, 'uri3');
+//        }
     }
 
     if (empty($_REQUEST['search']) && !isset($_REQUEST['option']) || ( isset($_REQUEST['option']) && $_REQUEST['option'] == 'index' ))
@@ -316,14 +319,23 @@ $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = nu
     $items = \Nyos\mod\items::get($db, '021.items');
 
     // если поиск и нашли всего 1 товар
-    if ( !empty($items) && sizeof($items) == 1 && !empty($search) ) {
-        
+    if (!empty($items) && sizeof($items) == 1 && !empty($search)) {
+
         // \f\pa( $items );
-        
-        \f\redirect( '/'.$_REQUEST['level'].'/i/'.$items[0]['id'].'/'. \f\translit( substr($items[0]['head'],0,20) , 'uri2' ).'/' , '' );
+        //\f\redirect('/' . $_REQUEST['level'] . '/i/' . $items[0]['id'] . '/' . \f\translit(substr($items[0]['head'], 0, 20), 'uri2') . '/', '');
+
+        $go = ['level'   => $_REQUEST['level'],
+            'option'  => 'i',
+            'ext1'     => $items[0]['id'],
+            'ext2'    => \f\translit(substr($items[0]['head'], 0, 20), 'uri2'),
+            'search2' => $search ,                
+        ];
+//        \f\redirect('index.php?' . http_build_query($go));
+        \f\redirect( '','index.php' , $go );
+
         die();
     }
-    
+
     // ищем по каталожному номеру
     elseif (empty($items)) {
         // if ( !empty($search) ) {
@@ -351,7 +363,7 @@ $twig->addFunction($function);
 /**
  * получаем товары что лежат в корзине товаров
  */
-$function = new Twig_SimpleFunction('shop__get_items_from_cart', function ( $db ) {
+$function = new Twig_SimpleFunction('shop__get_items_from_cart', function ($db) {
 
     if (!empty($_SESSION['cart']) && sizeof($_SESSION['cart']) > 0) {
 
@@ -392,7 +404,10 @@ $function = new Twig_SimpleFunction('shop__get_items_from_cart', function ( $db 
 
         if (!empty($search)) {
 
+            // $search = str_replace( $search , ' ' , '' );
+
             $s0 = explode(' ', $search);
+            // $s0 = \f\translit( $search , 'uri3' );
             if (sizeof($s0) > 1) {
 
                 $ns = 1;
@@ -405,8 +420,10 @@ $function = new Twig_SimpleFunction('shop__get_items_from_cart', function ( $db 
                     }
                 }
             } else {
-                \Nyos\mod\items::$where2 .= ' AND mi.head LIKE :ss ';
+
+                \Nyos\mod\items::$where2 .= ' AND ( mi.head LIKE :ss OR mi.head = :ss2 ) ';
                 \Nyos\mod\items::$var_ar_for_1sql[':ss'] = '%' . $search . '%';
+                \Nyos\mod\items::$var_ar_for_1sql[':ss2'] = $search;
             }
         }
 
@@ -414,7 +431,7 @@ $function = new Twig_SimpleFunction('shop__get_items_from_cart', function ( $db 
         $items = \Nyos\mod\items::get($db, '021.items');
         // ищем по каталожному номеру
         if (empty($items)) {
-            \Nyos\mod\items::$search['catNumber_search'] = \f\translit($search, 'cifru_bukvu');
+            \Nyos\mod\items::$search['catNumber_search'] = \f\translit($search, 'url3');
             $items = \Nyos\mod\items::get2($db, '021.items');
         }
 

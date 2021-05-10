@@ -85,19 +85,17 @@ if (( isset($get['action']) && $get['action'] == 'scan_new_file' ) || (isset($_G
 // если норм работа
 else {
 
-
-
-
-    if (isset($_REQUEST['id']{0}) && isset($_REQUEST['s']{5}) &&
-            Nyos\nyos::checkSecret($_REQUEST['s'], $_REQUEST['id']) === true) {
+    if (!empty($_REQUEST['aj_name']) && !empty($_REQUEST['aj_kod'])) {
         
+    } else if (!empty($_REQUEST['id']) && !empty($_REQUEST['s']) &&
+        Nyos\nyos::checkSecret($_REQUEST['s'], $_REQUEST['id']) === true) {
+
     } else {
         f\end2('Произошла неописуемая ситуация #' . __LINE__ . ' обратитесь к администратору', 'error', array('line' => __LINE__));
     }
 
-
-
-
+    
+    
     //
     if (!empty($_REQUEST['action']) && $_REQUEST['action'] == 'remove_from_cart') {
 
@@ -123,12 +121,12 @@ else {
                 if (empty($_SESSION['cart'][$_REQUEST['id']]['kolvo'])) {
                     $_SESSION['cart'][$_REQUEST['id']]['kolvo'] = 1;
                 } else {
-                    $_SESSION['cart'][$_REQUEST['id']]['kolvo'] ++;
+                    $_SESSION['cart'][$_REQUEST['id']]['kolvo']++;
                 }
             } elseif ($_REQUEST['action'] == 'shop__item_remove') {
 
                 if (!empty($_SESSION['cart'][$_REQUEST['id']]['kolvo']) && $_SESSION['cart'][$_REQUEST['id']]['kolvo'] > 0)
-                    $_SESSION['cart'][$_REQUEST['id']]['kolvo'] --;
+                    $_SESSION['cart'][$_REQUEST['id']]['kolvo']--;
             }
         }
 
@@ -158,7 +156,7 @@ else {
 
         \f\end2('добавлено', true,
                 [
-                    'kolvo' => sizeof($_SESSION['cart'])
+                    'kolvo'   => sizeof($_SESSION['cart'])
                     ,
                     'to_cart' => $_SESSION['cart']
                 ]

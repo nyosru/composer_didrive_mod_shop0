@@ -37,7 +37,7 @@
                         {#href="#" #}
                         href="/show/i/{{ item.id }}/{{ f__translit(item.head,'uri2') }}/"
                         {#onclick="return false;" #}
-                        title="{{ item.head|e }}" class="black" >{{ item.head|replace({'\\"':'"'}) }}</a>
+                        title="{{ item.head|e }}" class="black" >{{ item.head|replace({'\\"':'"'}) }}  <font class="manufacturer">{{ item.manufacturer ?? '' }}</font></a>
                 </h3>
             </div>
 
@@ -85,7 +85,11 @@
                             action="add_item_to_cart"
 
                             {%  for k3,v3 in item %}
+                            {% if k3 == 'head' %}
+                                aj_{{ k3 }} ="{{ v3 }} {{ item1.manufacturer ?? '' }}"
+                            {% else %}
                                 aj_{{ k3 }} ="{{ v3 }}"
+                            {% endif %}
                             {% endfor %}
                             {#aj_name ="{{ item.head }}"#}
                             {#aj_price ="{{ item.a_price }}"#}
@@ -113,7 +117,6 @@
                     </a>
 
                 </center>
-
 
             </div>
 

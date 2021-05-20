@@ -116,3 +116,5 @@ a.cart_item_delete:HOVER{ color: rgba(255,0,0,0.7); }
 img.img-responsive{
     max-width: 100%; max-height: 140px; xheight: auto; xborder: 1px solid gray;
 }
+
+ font.manufacturer{ color:#334b88; }

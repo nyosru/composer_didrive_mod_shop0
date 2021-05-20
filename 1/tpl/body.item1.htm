@@ -22,12 +22,12 @@
 
             <div class="col-xs-12 col-sm-4 bg-info" style="border-radius: 3px;">
                 {#инфа о товаре#}
-                {#{{ pa(item1) }}#}
+{#                {{ pa(item1) }}#}
 
                 <br/>
                 <br/>
 
-                <h3>{{ item1.head }}</h3>
+                <h3>{{ item1.head }} <font class="manufacturer">{{ item1.manufacturer ?? '' }}</font></h3>
 
                 <br/>
                 <br/>

@@ -220,17 +220,22 @@ $(document).ready(function () {
 
     //
     $(document).on('click', '.deleteItemFromCart', function (event) {
+
         event.preventDefault();
+
         if (!confirm('Удалить позицию ?'))
             return false;
+
         // console.log("$(document).on('click', '.deleteItemFromCart', function (event) {");
         var th = $(this);
         var item_id = $(this).attr('item_id');
         var s = $(this).attr('s');
         deleteItemFromCart(item_id, s);
         $('#item_tr_' + item_id).remove();
+
         // refreshCart($('#shop_id').val());
         return false;
+
     });
 
     $(document).on('click', '.shop__change_kolvo', function (event) {
@@ -307,12 +312,19 @@ $(document).ready(function () {
                         $('#show__search_tov_other_shop tbody').html('');
 
                         $.each($j, function (ind, val) {
+
                             //// console.log(val.ProductName, val.Quantity, val.Price);
+                            // console.log( val );
 
                             $('#show__search_tov_other_shop tbody').append(
                                     '<tr>' +
                                     '<td>' +
-                                    val.PriceListDiscountCode +
+
+                                    // val.catnumber_search +
+                                    // // val.PriceListDiscountCode +
+                                    // search +
+                                    val.CodeAsIs +
+                                    
                                     '</td>' +
                                     '<td>' +
                                     val.ProductName +
@@ -320,7 +332,7 @@ $(document).ready(function () {
                                     '<b>' +
                                     val.ManufacturerName +
                                     '</b>' +
-                                    '</td>' +
+                                    '</td>' +                                    
                                     '<td>' +
                                     val.PeriodMax +
                                     '</td>' +
@@ -365,6 +377,8 @@ $(document).ready(function () {
                                     ' id="but_ok_' + val.PriceListDiscountCode + '" ' +
                                     ' style="margin-top:0;display:none;" ' +
                                     ' >В&nbsp;корзине</a> ' +
+
+
 //                ' <center> ' +
 //                    ' <button class="addcart-ver2 shop__add_to_cart xaddToCart xbtn xbtn-default " ' +
 //

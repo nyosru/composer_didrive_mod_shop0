@@ -26,7 +26,7 @@
         <td class="product-name">
 
             <a href="/show/i/{{ item.id }}/{{ f__translit(item.head,'uri2') }}/" >
-            {{ item.head }}
+            {{ item.head }} <font class="manufacturer">{{ item.manufacturer ?? '' }}</font>
             </a>
 
             {#{{ pa(item) }}#}

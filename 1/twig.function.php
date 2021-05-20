@@ -318,8 +318,10 @@ $function = new Twig_SimpleFunction('shop__get_items', function ($db, $cat = nul
     //\Nyos\mod\items::$show_sql = true;
     $items = \Nyos\mod\items::get($db, '021.items');
 
+// \f\pa($items);
+
     // если поиск и нашли всего 1 товар
-    if (!empty($items) && sizeof($items) == 1 && !empty($search)) {
+    if ( !empty($items) && sizeof($items) == 1 && !empty($search)) {
 
         // \f\pa( $items );
         //\f\redirect('/' . $_REQUEST['level'] . '/i/' . $items[0]['id'] . '/' . \f\translit(substr($items[0]['head'], 0, 20), 'uri2') . '/', '');
@@ -342,7 +344,10 @@ $function = new Twig_SimpleFunction('shop__get_items', function ($db, $cat = nul
         //\Nyos\mod\items::$search['catnumber_search'] = strtolower(\f\translit($search, 'uri3'));
         // \Nyos\mod\items::$show_sql = true;
         // \Nyos\mod\items::$liked_and['catnumber_search'] = strtolower(\f\translit($search, 'uri3'));
-        $items = \Nyos\mod\items::get($db, '021.items');
+
+        // $items = \Nyos\mod\items::get($db, '021.items');
+        return false;
+
     }
 
     if (!empty($a_id)) {

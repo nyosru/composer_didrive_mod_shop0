@@ -1,261 +1,204 @@
 {% spaceless %}
 
-    <div class="container" >
-        <div class="row" >
+	<div class="container">
+		<div class="row">
 
-            <div class="col-xs-12 col-sm-8" >
+			<div
+				class="col-xs-12 col-sm-8">
 
-                {#фоточки#}
+				{#фоточки#}
 
-                {% if item1.a_arrayimage is not empty %}
-                    {% set img1 = search_img(item1.a_arrayimage) %}
-                {% else %}
-                    {% set img1 = false %}
-                {% endif %}
+				{% if item1.a_arrayimage is not empty %}
+					{% set img1 = search_img(item1.a_arrayimage) %}
+				{% else %}
+					{% set img1 = false %}
+				{% endif %}
 
-                <img 
-                    src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="{{ item1.head|e }}" class=" {#img-responsive#} "
-                    style="width:100%;"
-                    />{#</a>#}
+				<img
+				src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="{{ item1.head|e }}" class=" {#img-responsive#} " style="width:100%;"/>
+			{#</a>#}
 
-            </div>
+			</div>
 
-            <div class="col-xs-12 col-sm-4 bg-info" style="border-radius: 3px;">
-                {#инфа о товаре#}
-{#                {{ pa(item1) }}#}
+			<div
+				class="col-xs-12 col-sm-4 bg-info" style="border-radius: 3px;">
+				{#инфа о товаре#}
+				{# {{ pa(item1) }} #}
 
-                <br/>
-                <br/>
+				<br/>
+				<br/>
 
-                <h3>{{ item1.head }} <font class="manufacturer">{{ item1.manufacturer ?? '' }}</font></h3>
+				<h3>
+                    {{ item1.head }}
+					<font class="manufacturer">{{ item1.manufacturer ?? '' }}</font>
+				</h3>
 
-                <br/>
-                <br/>
+				<br/>
+				<br/>
 
-                <p>{% if item1.a_price > 0 %}Цена:&nbsp;{{ item1.a_price|number_format(0,'','`') }}&nbsp;р{% else %}Заказная позиция{% endif %}</p>
+				<p>
+					{% if item1.a_price > 0 %}Цена:&nbsp;{{ item1.a_price|number_format(0,'','`') }}&nbsp;р{% else %}Заказная позиция
+					{% endif %}
+				</p>
 
-                <br/>
-                <br/>
+				<br/>
+				<br/>
 
-                <nobr>
-                    <button type="button" 
-                            style="display:inline-block; {#xfloat:left;#} {#padding: 8px;#} border-radius: 3px;"
+				<nobr>
+					<button type="button" style="display:inline-block; {#xfloat:left;#} {#padding: 8px;#} border-radius: 3px;" class="btn btn-xs btn-danger {#shop__change_kolvo#}" {#action="shop__item_remove"#} {#item_id="{{ item1.id }}"#} {#s="{{ creatSecret(item1.id) }}"#} onclick="$ee = $('#quantity{{ item1.id }}').val() - 1; $('#quantity{{ item1.id }}').val($ee > 0 ? $ee : 0);">
+						<i class="fa fa-minus"></i>
+					</button>
 
-                            class="btn btn-xs btn-danger {#shop__change_kolvo#}"
-                            {#action="shop__item_remove"#}
-                            {#item_id="{{ item1.id }}"#}
-                            {#s="{{ creatSecret(item1.id) }}"#}
+					<input type="text" readonly="" style="display:inline-block; width:80px; text-align: center; {#xfloat:left;#}" id="quantity{{ item1.id }}" min="1" max="999" step="1" name="quantity[{{ item1.id }}]" value="{% if item1.kolvo is not empty and item1.kolvo >= 0 %}{{ item1.kolvo }}{% else %}1{% endif %}" size="1" class="form-control kolvo-items">
 
-                            onclick="$ee = $('#quantity{{ item1.id }}').val() - 1; $('#quantity{{ item1.id }}').val($ee > 0 ? $ee : 0);"
+					<button type="button" {#xdata-toggle="tooltip" #} {#xtitle="" #} {#xonclick="" #} {#xdata-original-title="Добавить 1"#} style=" display:inline-block; {#xfloat:left;#} " class=" btn btn-xs btn-success {#shop__change_kolvo#} " {#action="shop__item_add"#} {#item_id="{{ item1.id }}"#} {#s="{{ creatSecret(item1.id) }}"#} onclick="$ee = +$('#quantity{{ item1.id }}').val() + 1; $('#quantity{{ item1.id }}').val($ee > 0 ? $ee : 0);">
+						<i class="fa fa-plus"></i>
+					</button>
 
-                            ><i class="fa fa-minus"></i></button>
+					{#
+					                    <button type="submit" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Update"><i class="fa fa-clone"></i></button>
+					                    #}
 
-                    <input type="text" 
-                           readonly=""
-                           style="display:inline-block; width:80px; text-align: center; {#xfloat:left;#}"
+				</nobr>
 
-                           id="quantity{{ item1.id }}"
 
-                           min="1" max="999" step="1" 
-                           name="quantity[{{ item1.id }}]"
-                           value="{% if item1.kolvo is not empty and item1.kolvo >= 0 %}{{ item1.kolvo }}{% else %}1{% endif %}" 
-                           size="1" 
-                           class="form-control kolvo-items"
-                           >
+				<br/>
+				<br/>
+				<div class="button-ver2">
+					<center>
+						<button class="{#addcart-ver2#} shop__add_to_cart {#xaddToCart#} btn btn-success" {#style="width: auto; xdisplay: inline-block; margin:0 auto;"#} {#xtype="button" #} {#xdata-toggle="tooltip" #} {#xtitle="" #} {#xonclick="cart.add('42', '1');" #} {#xonclick="refreshCart('42', '1');" #} {#xdata-original-title="Add to Cart"#} action="add_item_to_cart" {% for k3,v3 in item1 %} aj_ {{ k3 }}="{{ v3 }}" {% endfor %} {#aj_name ="{{ item1.head }}"#} {#aj_price ="{{ item1.a_price }}"#} aj_kolvo="1" {#aj_img ="{% if item1.a_arrayimage is not empty %}{{ item1.a_arrayimage }}{% endif %}"#} id="{{ item1.id ~ item1.a_price ~'1' }}" s="{{ creatSecret( item1.id ~ item1.a_price ~'1' ) }}" hide_this_on_click="da" show_id_defore_click="but_ok_{{ item1.id }}" onclick="$('#{{ item1.id ~ item1.a_price ~'1' }}').attr('aj_kolvo', +$('#quantity{{ item1.id }}').val());">
+							<span class="">
+								Добавить в корзину
+							</span>
+						</button>
 
-                    <button 
-                        type="button" 
-                        {#xdata-toggle="tooltip" #}
-                        {#xtitle="" #}
-                        {#xonclick="" #}
-                        {#xdata-original-title="Добавить 1"#}
+						<a href="/show/cart/" class="addcart-ver2 ok btn btn-success" id="but_ok_{{ item1.id }}" style="margin-top:0;display:none;">
+							В корзине
+						</a>
 
-                        style=" display:inline-block; {#xfloat:left;#} "
+					</center>
+				</div>
 
-                        class=" btn btn-xs btn-success {#shop__change_kolvo#} " 
-                        {#action="shop__item_add"#}
-                        {#item_id="{{ item1.id }}"#}
-                        {#s="{{ creatSecret(item1.id) }}"#}
+				<br/>
+				<br/>
+				<br/>
+				{#
+				                                <br/>
+				                                <br/>
+				                
+				                                {{ pa(item1) }}
+				                #}
 
-                        onclick="$ee = +$('#quantity{{ item1.id }}').val() + 1; $('#quantity{{ item1.id }}').val($ee > 0 ? $ee : 0);"
+			</div>
 
+		</div>
 
-                        ><i class="fa fa-plus"></i></button>
+		{% set show_menu2 = false %}
 
-                    {#
-                    <button type="submit" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Update"><i class="fa fa-clone"></i></button>
-                    #}
 
-                </nobr>
+		{% if item1.comment is defined and item1.comment|length > 2 %}
+			{% set show_menu2 = true %}
+		{% endif %}
 
-
-                <br/>
-                <br/>
-                <div class="button-ver2">
-                    <center>
-                        <button class="{#addcart-ver2#} shop__add_to_cart {#xaddToCart#} btn btn-success" 
-
-                                {#style="width: auto; xdisplay: inline-block; margin:0 auto;"#}
-
-                                {#xtype="button" #}
-                                {#xdata-toggle="tooltip" #}
-                                {#xtitle="" #}
-                                {#xonclick="cart.add('42', '1');" #}
-                                {#xonclick="refreshCart('42', '1');" #}
-                                {#xdata-original-title="Add to Cart"#}
-
-                                action="add_item_to_cart"
-
-                                {%  for k3,v3 in item1 %}
-                                    aj_{{ k3 }} ="{{ v3 }}"
-                                {% endfor %}
-                                {#aj_name ="{{ item1.head }}"#}
-                                {#aj_price ="{{ item1.a_price }}"#}
-                                aj_kolvo ="1"
-                                {#aj_img ="{% if item1.a_arrayimage is not empty %}{{ item1.a_arrayimage }}{% endif %}"#}
-
-                                id ="{{ item1.id ~ item1.a_price ~'1' }}"
-                                s ="{{ creatSecret( item1.id ~ item1.a_price ~'1' ) }}"
-
-                                hide_this_on_click="da"
-                                show_id_defore_click="but_ok_{{ item1.id }}"
-
-                                onclick="$('#{{ item1.id ~ item1.a_price ~'1' }}').attr('aj_kolvo', +$('#quantity{{ item1.id }}').val());"
-
-                                > 
-                            <span class="">
-                                Добавить в корзину
-                            </span>
-                        </button>
-
-                        <a href="/show/cart/" 
-                           class="addcart-ver2 ok btn btn-success" 
-                           id="but_ok_{{ item1.id }}"
-                           style="margin-top:0;display:none;"
-                           > 
-                            В корзине
-                        </a>
-
-                    </center>
-                </div>
-
-                <br/>
-                <br/>
-                <br/>
-                {#
-                                <br/>
-                                <br/>
-                
-                                {{ pa(item1) }}
-                #}
-
-            </div>
-
-        </div>
-
-        {% set show_menu2 = false %}
-
-
-
-
-
-
-        {% if item1.comment is defined and item1.comment|length > 2 %}
-            {% set show_menu2 = true %}
-        {% endif %}
-
-        {%  set items_analog = shop__get_analogi_items( db, item1.a_catnumber ) %}
-        {#{{ pa(items_analog) }}#}
-
-        {% if items_analog|length > 0 %}
-            {% set show_menu2 = true %}
-        {% endif %}
-
-
-
-        {% if show_menu2 == true %}
-            {% if item1.comment is defined and item1.comment|length > 2 %}
-                <div class="row">
-                    <div class="col-xs-12">
-
-                        <ul class="nav nav-tabs">
-                            {% if item1.comment is defined and item1.comment|length > 2 %}
-                                <li role="presentation" class="active"><a  onclick="return false;" href="#">Описание</a></li>
-                                {% endif %}
-
-                            {#<li role="presentation"><a href="#">Тех. параметры</a></li>#}
-
-                            {% if items_analog|length > 0 %}
-                                <li role="presentation"><a href="#an">Аналоги других производителей</a></li>
-                                {% endif %}
-                        </ul>
-
-                    </div>                
-                </div>                
-
-                {% if item1.comment is defined and item1.comment|length > 2%}
-                    <div class="row" id="opis">
-                        <div class="col-xs-12" style="padding:20px;">
-                            <p>{{ item1.comment|raw }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-                
-            {% endif %}
-
-            {% if items_analog|length > 0 %}
-                <div class="row" id="an" >
-                    <div class="col-xs-12">
-
-                        <br/>
-                        <br/>
-                        <br/>
-                        <br/>
-
-                        <ul class="nav nav-tabs">
-
-                            {% if item1.comment is defined and item1.comment|length > 2 %}
-                                <li role="presentation" ><a href="#opis">Описание</a></li>
-                                {% endif %}
-
-                            <li role="presentation" class="active">
-                                <a href="#"  class="active" onclick="return false;"> Аналоги других производителей </a>
-                            </li>
-                        </ul>
-
-
-                        {% if items_analog|length > 0 %}
-
-                            {#<div class="col-12 text-center" style="padding: 3vh 0;" >
-                                <h3>Аналоги других производителей</h3>
-                            </div>#}
-
-                            {# список итемов #}
-                            <div class="product-list grid_full grid_sidebar grid-uniform container-fluid" style="margin-top: 30px;">
-
-                                {% for item in items_analog %}
-                                    {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
-                                {% endfor %}
-                            </div>
-
-                        {% endif %}
-
-                    </div>
-                </div>
-            {% endif %}
-
-        {% endif %}
-
-    </div>
-
-    <script>
-        $(document).ready(function () { // вся мaгия пoслe зaгрузки стрaницы
-            $("body").on('click', '[href*="#"]', function (e) {
-                var fixed_offset = 50;
-                $('html,body').stop().animate({scrollTop: $(this.hash).offset().top - fixed_offset}, 1000);
-                e.preventDefault();
-            });
-        });
-    </script>
+		{%  set items_analog = shop__get_analogi_items( db, item1.a_catnumber ) %}
+		{#{{ pa(items_analog) }}#}
+
+		{% if items_analog|length > 0 %}
+			{% set show_menu2 = true %}
+		{% endif %}
+
+
+		{% if show_menu2 == true %}
+			{% if item1.comment is defined and item1.comment|length > 2 %}
+				<div class="row">
+					<div class="col-xs-12">
+
+						<ul class="nav nav-tabs">
+							{% if item1.comment is defined and item1.comment|length > 2 %}
+								<li role="presentation" class="active">
+									<a onclick="return false;" href="#">Описание</a>
+								</li>
+							{% endif %}
+
+							{#<li role="presentation"><a href="#">Тех. параметры</a></li>#}
+
+							{% if items_analog|length > 0 %}
+								<li role="presentation">
+									<a href="#an">Аналоги других производителей</a>
+								</li>
+							{% endif %}
+						</ul>
+
+					</div>
+				</div>
+
+				{% if item1.comment is defined and item1.comment|length > 2%}
+					<div class="row" id="opis">
+						<div class="col-xs-12" style="padding:20px;">
+							<p>{{ item1.comment|raw }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+			{% endif %}
+
+			{% if items_analog|length > 0 %}
+				<div class="row" id="an">
+					<div class="col-xs-12">
+
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+
+						<ul class="nav nav-tabs">
+
+							{% if item1.comment is defined and item1.comment|length > 2 %}
+								<li role="presentation">
+									<a href="#opis">Описание</a>
+								</li>
+							{% endif %}
+
+							<li role="presentation" class="active">
+								<a href="#" class="active" onclick="return false;">
+									Аналоги других производителей
+								</a>
+							</li>
+						</ul>
+
+
+						{% if items_analog|length > 0 %}
+
+							{#<div class="col-12 text-center" style="padding: 3vh 0;" >
+							                                <h3>Аналоги других производителей</h3>
+							                            </div>#}
+
+							{# список итемов #}
+								<div class="product-list grid_full grid_sidebar grid-uniform container-fluid" style="margin-top: 30px;"> {% for item in items_analog %}
+									{% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+								{% endfor %}
+							</div>
+
+						{% endif %}
+
+					</div>
+				</div>
+			{% endif %}
+
+		{% endif %}
+
+	</div>
+
+	<script>
+		$(document).ready(function () { // вся мaгия пoслe зaгрузки стрaницы
+$("body").on('click', '[href*="#"]', function (e) {
+var fixed_offset = 50;
+$('html,body').stop().animate({
+scrollTop: $(this.hash).offset().top - fixed_offset
+}, 1000);
+e.preventDefault();
+});
+});
+	</script>
 
 {% endspaceless %}

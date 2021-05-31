@@ -82,7 +82,9 @@ $function = new Twig_SimpleFunction('shop__get_analogi_items', function ($db, $a
             . ' i.* , a.art_analog articul2'
             . ' FROM `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items_analogi) . '` a '
             . ' LEFT JOIN `' . \f\db_table(\Nyos\mod\parsing_xml1c::$mod_items) . '` i ON a.art_analog = i.a_catnumber '
-            . ' WHERE a.art_origin = :articul AND a.status = \'show\' ; ';
+            . ' WHERE a.art_origin = :articul AND a.status = \'show\' 
+            GROUP BY i.id
+            ; ';
 
     $ff = $db->prepare($sql);
     $ff->execute([':articul' => $analog]);

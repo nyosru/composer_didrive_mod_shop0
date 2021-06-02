@@ -273,6 +273,7 @@
 
 														{% elseif i < page_now %}
 															{% if i> ( page_now - show_page_in_list ) %}
+
 																<li>
 																	{% if get.search is defined %}
 																		{% set get1 = get %}
@@ -282,6 +283,7 @@
 																		<a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
 																	{% endif %}
 																</li>
+																
 															{% elseif skip_page_in_start == false %}
 																{% set skip_page_in_start = true %}
 																<li>

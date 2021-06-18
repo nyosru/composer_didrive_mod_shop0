@@ -207,11 +207,14 @@ $function = new Twig_SimpleFunction('search_img', function ($item) {
         return false;
 
     if (file_exists(DR . DS . 'sites' . DS . \Nyos\Nyos::$folder_now . DS . 'download' . DS . 'photo' . DS . strtolower($item) . '.jpg')) {
-        return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . strtolower($item) . '.jpg';
+        return 'photo' . DS . strtolower($item) . '.jpg';
+        // return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . strtolower($item) . '.jpg';
     } elseif (file_exists(DR . DS . 'sites' . DS . \Nyos\Nyos::$folder_now . DS . 'download' . DS . 'photo' . DS . strtolower($item))) {
-        return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . strtolower($item);
+        return 'photo' . DS . strtolower($item);
+        // return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . strtolower($item);
     } elseif (file_exists(DR . DS . 'sites' . DS . \Nyos\Nyos::$folder_now . DS . 'download' . DS . 'photo' . DS . $item)) {
-        return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . $item;
+        return 'photo' . DS . $item;
+        // return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . $item;
     }
 
     if (!empty($item['a_catNumber']))

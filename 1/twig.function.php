@@ -135,7 +135,9 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ($db, $c
 //            
             // . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c5 ON c5.a_id = c4.a_parentid '
             // . ' LEFT JOIN mod_'.\f\translit( \Nyos\mod\parsing_xml1c::$mod_cats , 'uri2').' c6 ON c6.a_parentid = c5.a_id  '
-            . ' WHERE c1.a_id = :cat ; ';
+            . ' WHERE c1.a_id = :cat 
+            ORDER BY c1.head ASC, c2.head ASC
+            ; ';
 
     $ff = $db->prepare($sql);
     $ff->execute([':cat' => $cat_id]);

@@ -13,9 +13,8 @@
 				{% else %}
 					{% set img1 = false %}
 				{% endif %}
-
 				<img
-				src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="{{ item1.head|e }}" class=" {#img-responsive#} " style="width:100%;"/>
+				src="{% if img1 != false %}/di-img/min/800/{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="{{ item1.head|e }}" class=" {#img-responsive#} " style="width:100%;"/>
 			{#</a>#}
 
 			</div>

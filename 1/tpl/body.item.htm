@@ -46,7 +46,28 @@
 			<div class="button-ver2">
 
 				<center>
-					<button class="addcart-ver2 shop__add_to_cart xaddToCart xbtn xbtn-default " style="width: auto; xdisplay: inline-block; margin:0 auto;" {# xtype="button" xdata-toggle="tooltip" #} {# xtitle="" #} {# xonclick="cart.add('42', '1');" #} {# xonclick="refreshCart('42', '1');" #} {# xdata-original-title="Add to Cart"#} action="add_item_to_cart" {% for k3,v3 in item %} {% if k3 == 'head' %} aj_ {{ k3 }}="{{ v3 }} {{ item1.manufacturer ?? '' }}" {% else %} aj_ {{ k3 }}="{{ v3 }}" {% endif %} {% endfor %} {#aj_name ="{{ item.head }}"#} {#aj_price ="{{ item.a_price }}"#} aj_kolvo="1" {#aj_img ="{% if item.a_arrayimage is not empty %}{{ item.a_arrayimage }}{% endif %}"#} id="{{ item.head ~ item.a_price ~'1' }}" s="{{ creatSecret( item.head ~ item.a_price ~'1' ) }}" hide_this_on_click="da" show_id_defore_click="but_ok_{{ item.id }}">
+					<button class="addcart-ver2 shop__add_to_cart xaddToCart xbtn xbtn-default " 
+					style="width: auto; 
+					{# xdisplay: inline-block;  #}
+					margin:0 auto;" 
+					{# xtype="button" xdata-toggle="tooltip" #} {# xtitle="" #} {# xonclick="cart.add('42', '1');" #} 
+					{# xonclick="refreshCart('42', '1');" #} {# xdata-original-title="Add to Cart"#} 
+					action="add_item_to_cart" 
+					
+					{% for k3,v3 in item %} 
+						{% if k3 == 'head' %} 
+							{{ 'aj_'~k3 }}="{{ v3 }} {{ item1.manufacturer ?? '' }}" 
+						{% else %} 
+							{{ 'aj_'~k3 }}="{{ v3 }}" 
+						{% endif %} 
+					{% endfor %} 
+					{#aj_name ="{{ item.head }}"#} {#aj_price ="{{ item.a_price }}"#} 
+					aj_kolvo="1" 
+					{#aj_img ="{% if item.a_arrayimage is not empty %}{{ item.a_arrayimage }}{% endif %}"#} 
+					id="{{ item.head ~ item.a_price ~'1' }}" s="{{ creatSecret( item.head ~ item.a_price ~'1' ) }}" 
+					hide_this_on_click="da" 
+					show_id_defore_click="but_ok_{{ item.id }}" 
+					>
 						<span class="">
 							Добавить в&nbsp;корзину
 						</span>

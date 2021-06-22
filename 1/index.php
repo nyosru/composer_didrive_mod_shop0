@@ -12,6 +12,8 @@ if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items']) && !
             . PHP_EOL
             . htmlspecialchars($_REQUEST['phone'])
             . PHP_EOL
+            . 'Нужна помощь специалиста: '.( isset($_REQUEST['help']) ? 'да' : 'нет' )
+            . PHP_EOL
             . 'Ваш город '.htmlspecialchars($_REQUEST['city'])
             . PHP_EOL
             . ( !empty( $_REQUEST['dost'] ) ? PHP_EOL . 'адрес для доставки: '.htmlspecialchars($_REQUEST['dost']) : '' )
